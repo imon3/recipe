@@ -5,3 +5,7 @@ body {
 .text-slanted {
     font-family: 'Courgette', cursive !important;
 }
+
+.img-height {
+    height: 14rem
+}
