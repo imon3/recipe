@@ -5,27 +5,27 @@ class RecipeDetails extends React.Component {
     super(props);
 
     this.state = {
-      recipe: this.props.recipeDetails,
-      url: `https://www.food2fork.com/api/get?key=f141ed8cccedb28ecdcabc6507092a51&rId=${
-        this.props.id
-      }`
+      recipe: this.props.recipeDetails
+      // url: `https://www.food2fork.com/api/get?key=f141ed8cccedb28ecdcabc6507092a51&rId=${
+      //   this.props.id
+      // }`
     };
   }
 
-  async componentDidMount() {
-    try {
-      const data = await fetch(this.state.url);
-      const jsonData = await data.json();
-      this.setState(
-        {
-          recipe: jsonData.recipe
-        },
-        () => {}
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // async componentDidMount() {
+  //   try {
+  //     const data = await fetch(this.state.url);
+  //     const jsonData = await data.json();
+  //     this.setState(
+  //       {
+  //         recipe: jsonData.recipe
+  //       },
+  //       () => {}
+  //     );
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   render() {
     const {
@@ -36,6 +36,9 @@ class RecipeDetails extends React.Component {
       title,
       ingredients
     } = this.state.recipe;
+
+    const { handleIndex } = this.props;
+
     return (
       <>
         <div className="container">
@@ -44,6 +47,7 @@ class RecipeDetails extends React.Component {
               <button
                 type="button"
                 className="btn btn-warning mb-5 text-capitalize"
+                onClick={() => handleIndex(1)}
               >
                 back to recipe list
               </button>

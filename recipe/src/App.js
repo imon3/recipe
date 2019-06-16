@@ -14,36 +14,68 @@ class App extends React.Component {
       url:
         "https://www.food2fork.com/api/search?key=f141ed8cccedb28ecdcabc6507092a51",
       details_id: 35387,
-      pageIndex: 0
+      pageIndex: 1,
+      search: ""
     };
   }
 
-  async getRecipes() {
-    try {
-      const data = await fetch(this.state.url);
-      const jsonData = await data.json();
-      this.setState({
-        recipes: jsonData.recipes
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // componentDidMount() {
+  //   this.getRecipes();
+  // }
 
-  componentDidMount() {
-    this.getRecipes();
-  }
+  // async getRecipes() {
+  //   try {
+  //     const data = await fetch(this.state.url);
+  //     const jsonData = await data.json();
+  //     this.setState({
+  //       recipes: jsonData.recipes
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
+  handleIndex = index => {
+    this.setState({
+      pageIndex: index
+    });
+  };
+
+  handleDetails = (index, id) => {
+    this.setState({
+      details_id: id,
+      pageIndex: index
+    });
+  };
+
+  handleChange = e => {
+    console.log("hello from handle change");
+  };
+
+  handleSubmit = e => {
+    e.preventDefault();
+    console.log("hello from handle submit");
+  };
 
   displayPage = index => {
     switch (index) {
       default:
       case 1:
-        return <RecipeList recipes={this.state.recipes} />;
-      case 0:
+        return (
+          <RecipeList
+            recipes={this.state.recipes}
+            search={this.search}
+            handleDetails={this.handleDetails}
+            handleChange={this.handleChange}
+            handleSubmit={this.handleSubmit}
+          />
+        );
+      case 2:
         return (
           <RecipeDetails
             id={this.state.details_id}
             recipeDetails={recipeDetails}
+            handleIndex={this.handleIndex}
           />
         );
     }
