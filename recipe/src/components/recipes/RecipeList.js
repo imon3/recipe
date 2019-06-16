@@ -9,7 +9,8 @@ class RecipeList extends React.Component {
       handleDetails,
       search,
       handleChange,
-      handleSubmit
+      handleSubmit,
+      error
     } = this.props;
 
     return (
@@ -28,15 +29,21 @@ class RecipeList extends React.Component {
           </div>
           {/* End Of Title */}
           <div className="row">
-            {recipes.map(recipe => {
-              return (
-                <Recipe
-                  key={recipe.recipe_id}
-                  recipe={recipe}
-                  handleDetails={handleDetails}
-                />
-              );
-            })}
+            {error ? (
+              <h1 className="col-10 mx-auto col-md-6 text-center text-uppercase mb-3">
+                {error}
+              </h1>
+            ) : (
+              recipes.map(recipe => {
+                return (
+                  <Recipe
+                    key={recipe.recipe_id}
+                    recipe={recipe}
+                    handleDetails={handleDetails}
+                  />
+                );
+              })
+            )}
           </div>
         </div>
       </>

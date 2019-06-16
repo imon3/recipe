@@ -13,27 +13,38 @@ class App extends React.Component {
       recipes: recipes,
       url:
         "https://www.food2fork.com/api/search?key=f141ed8cccedb28ecdcabc6507092a51",
+      baseUrl:
+        "https://www.food2fork.com/api/search?key=f141ed8cccedb28ecdcabc6507092a51",
       details_id: 35387,
       pageIndex: 1,
-      search: ""
+      search: "",
+      query: "&q=",
+      error: ""
     };
   }
 
-  // componentDidMount() {
-  //   this.getRecipes();
-  // }
+  componentDidMount() {
+    this.getRecipes();
+  }
 
-  // async getRecipes() {
-  //   try {
-  //     const data = await fetch(this.state.url);
-  //     const jsonData = await data.json();
-  //     this.setState({
-  //       recipes: jsonData.recipes
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
+  async getRecipes() {
+    try {
+      const data = await fetch(this.state.url);
+      const jsonData = await data.json();
+
+      if (jsonData.recipes.length === 0) {
+        this.setState(() => {
+          return { error: "sorry, but your search did not return any results" };
+        });
+      } else {
+        this.setState(() => {
+          return { recipes: jsonData.recipes };
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   handleIndex = index => {
     this.setState({
@@ -49,12 +60,24 @@ class App extends React.Component {
   };
 
   handleChange = e => {
-    console.log("hello from handle change");
+    this.setState({
+      [e.target.name]: e.target.value
+    });
   };
 
   handleSubmit = e => {
     e.preventDefault();
-    console.log("hello from handle submit");
+    const { baseUrl, search, query } = this.state;
+
+    this.setState(
+      {
+        url: `${baseUrl}${query}${search}`,
+        search: ""
+      },
+      () => {
+        this.getRecipes();
+      }
+    );
   };
 
   displayPage = index => {
@@ -65,6 +88,7 @@ class App extends React.Component {
           <RecipeList
             recipes={this.state.recipes}
             search={this.search}
+            error={this.state.error}
             handleDetails={this.handleDetails}
             handleChange={this.handleChange}
             handleSubmit={this.handleSubmit}
